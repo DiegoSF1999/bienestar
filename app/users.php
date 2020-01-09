@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Helpers\Token;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class users extends Model
 {
@@ -27,6 +28,11 @@ class users extends Model
     {
         return $this->belongsToMany('App\apps', 'locations_relation', 'user_id', 'app_id')->using('App\locations_relation')
         ->withPivot([ 'latitude', 'altitude', 'open_close', 'created_at', 'updated_at']);
+    }
+
+    public function has()
+    {
+        return $this->belongsToMany('App\apps', 'has_relation', 'user_id', 'app_id');
     }
 
     public function register(Request $request)
@@ -65,6 +71,44 @@ class users extends Model
         }
         
     }
+
+    public function recover_password(Request $request)
+    {
+        try {
+            $user = users::where('email', $request->email)->first();
+            if ($user == null) {
+                return response()->json([
+                    'message' => "email not found"
+                ], 401);
+            } else  {
+                $new_password = str_random(8);
+                $hashed_random_password = Hash::make($new_password);
+                users::where('id', $user->id)->update(['password' => $hashed_random_password]);
+
+                $to      = 'diego_sanchez-brunete_apps1ma1819@cev.com'; //$user->email;
+                $subject = 'password reset bienestapp';
+                $message = 'the new password is: ' . $new_password;
+                $headers = 'From: diego_sanchez-brunete_apps1ma1819@cev.com' . "\r\n" .
+                    'Reply-To: ' . $to . "\r\n" .
+                    'X-Mailer: PHP/' . phpversion();
+                
+                mail($to, $subject, $message, $headers);
+
+                return $new_password;
+
+            }
+
+           
+       } catch (\Throwable $th) {
+            return response()->json([
+                'message' => "email not found"
+            ], 401);
+        }
+        
+
+
+    }
+    
     private function getTokenFromUser($user)
     {
         $token_inv = new Token();
@@ -73,6 +117,7 @@ class users extends Model
            'token' => $token
         ], 200);
     }
+
     public function get_logged_user(Request $request)
     {
         $token_inv = new Token();
@@ -83,6 +128,36 @@ class users extends Model
     }
 
 
+    public function link_user_app(Request $request)
+    {
+
+        try {
+            
+        $user = $this->get_logged_user($request);
+
+        $user->has()->attach($request->app_id);
+
+        return 200;
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => "wrong data"
+            ], 401);
+        }
+   
+
+    }
+
+    public function show_user_apps(Request $request)
+    {
+         
+        $user = $this->get_logged_user($request);
+
+        $data = DB::select('select * from apps, has_relation where has_relation.user_id = ' . $user->id);
+
+        return $data;
+ 
+
+    }
 
 
 

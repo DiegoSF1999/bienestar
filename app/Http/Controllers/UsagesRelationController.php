@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\usages_relation;
 use App\users;
+use Illuminate\Support\Facades\DB;
 
 class UsagesRelationController extends Controller
 {
@@ -19,7 +20,11 @@ class UsagesRelationController extends Controller
        
         $user = $users_inv->get_logged_user($request);
 
-        return $user->usages;
+        //SELECT usages_relation.id, usages_relation.user_id, usages_relation.app_id, usages_relation.used_time, usages_relation.date, SUM(usages_relation.used_time) AS "total_used_time" FROM usages_relation GROUP BY usages_relation.id, usages_relation.user_id, usages_relation.app_id, usages_relation.used_time, usages_relation.date
+
+        $data = DB::select('SELECT usages_relation.id, user_id, app_id, used_time, usages_relation.date, SUM(used_time) AS "total_used_time" FROM usages_relation, users WHERE users.id = "' . $user->email . '" GROUP BY usages_relation.id, user_id, app_id, used_time, usages_relation.date');
+
+        return $data;
     }
 
     /**

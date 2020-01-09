@@ -47,6 +47,26 @@ class UsersController extends Controller
          
     }
 
+
+    public function recover_password(Request $request)
+    {
+            $users = new users();
+            return $users->recover_password($request);
+         
+    }
+
+    public function link_user_app(Request $request)
+    {
+        $users = new users();
+            return $users->link_user_app($request);
+    }
+
+    public function show_user_apps(Request $request)
+    {
+        $users = new users();
+        return $users->show_user_apps($request);  
+
+    }
     /**
      * Display the specified resource.
      *

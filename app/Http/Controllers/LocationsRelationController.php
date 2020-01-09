@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\locations_relation;
 use App\users;
+use Illuminate\Support\Facades\DB;
 
 class LocationsRelationController extends Controller
 {
@@ -19,7 +20,9 @@ class LocationsRelationController extends Controller
        
         $user = $users_inv->get_logged_user($request);
 
-        return $user->locations;
+        $data = DB::select('select * from locations_relation where user_id = ' . $user->id);
+
+        return $data;
     }
 
     /**

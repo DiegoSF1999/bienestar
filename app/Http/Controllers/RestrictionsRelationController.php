@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\restrictions_relation;
 use App\users;
+use Illuminate\Support\Facades\DB;
 
 class RestrictionsRelationController extends Controller
 {
@@ -19,7 +20,9 @@ class RestrictionsRelationController extends Controller
        
         $user = $users_inv->get_logged_user($request);
 
-        return $user->restrictions;
+        $data = DB::select('select * from restrictions_relation where user_id = ' . $user->id);
+
+        return $data;
     }
 
     /**

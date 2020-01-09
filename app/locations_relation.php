@@ -18,7 +18,7 @@ class locations_relation extends Pivot
 
     public function register(Request $request)
     {
-       // try {
+        try {
             $location = new self();
             $users_inv = new users();
 
@@ -31,11 +31,11 @@ class locations_relation extends Pivot
             return 200;    
             
             
-     /*   } catch (\Throwable $th) {
+       } catch (\Throwable $th) {
             return response()->json([
                 'message' => "wrong data"
             ], 401);
-       }*/
+       }
        
     }
 }
