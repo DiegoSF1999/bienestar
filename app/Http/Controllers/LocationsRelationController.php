@@ -25,6 +25,18 @@ class LocationsRelationController extends Controller
         return $data;
     }
 
+    public function get_last_location(Request $request)
+    {
+        $users_inv = new users();
+       
+        $user = $users_inv->get_logged_user($request);
+       
+        $data = DB::select('select * from locations_relation where locations_relation.user_id = "' . $user->id . '" ORDER BY locations_relation.id DESC  
+        LIMIT 1');
+
+        return $data;
+    }
+
     /**
      * Show the form for creating a new resource.
      *

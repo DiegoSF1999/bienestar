@@ -20,9 +20,29 @@ class UsagesRelationController extends Controller
        
         $user = $users_inv->get_logged_user($request);
 
-        //SELECT usages_relation.id, usages_relation.user_id, usages_relation.app_id, usages_relation.used_time, usages_relation.date, SUM(usages_relation.used_time) AS "total_used_time" FROM usages_relation GROUP BY usages_relation.id, usages_relation.user_id, usages_relation.app_id, usages_relation.used_time, usages_relation.date
+        $data = DB::select('select * from usages_relation where user_id = ' . $user->id);
 
-        $data = DB::select('SELECT usages_relation.id, user_id, app_id, used_time, usages_relation.date, SUM(used_time) AS "total_used_time" FROM usages_relation, users WHERE users.id = "' . $user->email . '" GROUP BY usages_relation.id, user_id, app_id, used_time, usages_relation.date');
+        return $data;
+    }
+
+    public function get_total_use(Request $request)
+    {
+        $users_inv = new users();
+       
+        $user = $users_inv->get_logged_user($request);
+
+        $data = DB::select('select usages_relation.app_id, SUM(usages_relation.used_time) from usages_relation where user_id = ' . $user->id . ' group by usages_relation.app_id');
+
+        return $data;
+    }
+
+    public function get_average_use(Request $request)
+    {
+        $users_inv = new users();
+       
+        $user = $users_inv->get_logged_user($request);
+
+        $data = DB::select('select usages_relation.app_id, AVG(usages_relation.used_time) from usages_relation where user_id = ' . $user->id . ' group by usages_relation.app_id');
 
         return $data;
     }
