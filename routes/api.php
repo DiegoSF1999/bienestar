@@ -27,12 +27,14 @@ Route::apiResource('restrictions', 'RestrictionsRelationController')->middleware
 Route::POST('login', 'UsersController@login');
 Route::POST('recover', 'UsersController@recover_password');
 Route::POST('users', 'UsersController@store');
-Route::POST('link', 'UsersController@link_user_app')->middleware('token');
+Route::POST('assignapp', 'UsersController@link_user_app')->middleware('token');
 Route::GET('myapps', 'UsersController@show_user_apps')->middleware('token');
 Route::GET('totaluse', 'UsagesRelationController@get_total_use')->middleware('token');
+Route::POST('todayuse', 'UsagesRelationController@get_today_use')->middleware('token');
 Route::GET('averageuse', 'UsagesRelationController@get_average_use')->middleware('token');
 Route::GET('lastlocation', 'LocationsRelationController@get_last_location')->middleware('token');
 
+Route::GET('users', 'UsersController@index');
 
 
 

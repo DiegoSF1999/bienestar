@@ -14,7 +14,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return users::all();
+        return json_encode(users::all());
     }
 
     /**

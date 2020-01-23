@@ -14,7 +14,6 @@ class CreateRestrictionsRelationTable extends Migration
     public function up()
     {
         Schema::create('restrictions_relation', function (Blueprint $table) {
-            $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->unsignedInteger('app_id');
             $table->foreign('user_id')->references('id')->on('users');

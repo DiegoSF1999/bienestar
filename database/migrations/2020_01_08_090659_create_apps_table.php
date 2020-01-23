@@ -16,7 +16,7 @@ class CreateAppsTable extends Migration
         Schema::create('apps', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
-            $table->string('icon')->unique();
+            $table->string('icon')->nullable();
         });
     }
 

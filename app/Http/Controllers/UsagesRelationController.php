@@ -47,6 +47,18 @@ class UsagesRelationController extends Controller
         return $data;
     }
 
+    public function get_today_use(Request $request)
+    {
+        $users_inv = new users();
+       
+        $user = $users_inv->get_logged_user($request);
+
+        $data = DB::select('select apps.*, usages_relation.app_id, SUM(usages_relation.used_time) as used_time from usages_relation, apps where user_id = ' . $user->id . ' and usages_relation.date = "' . $request->date . '" and usages_relation.app_id = apps.id group by usages_relation.app_id
+        ');
+
+        return $data;
+    }
+
     /**
      * Show the form for creating a new resource.
      *

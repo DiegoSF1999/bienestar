@@ -59,6 +59,7 @@ class users extends Model
            if (Hash::check($request->password, $user->password))
            {
             return $this->getTokenFromUser($user);
+          //  json_encode($this->getTokenFromUser($user));
            } else {
             return response()->json([
                 'message' => "wrong data"
@@ -84,11 +85,12 @@ class users extends Model
                 $new_password = str_random(8);
                 $hashed_random_password = Hash::make($new_password);
                 users::where('id', $user->id)->update(['password' => $hashed_random_password]);
+                users::where('id', $user->id)->update(['changed' => ($user->changed + 1)]);
 
-                $to      = 'diego_sanchez-brunete_apps1ma1819@cev.com'; //$user->email;
+                $to      = 'alex_rodriguez_apps1ma1819@cev.com'; //$user->email;
                 $subject = 'password reset bienestapp';
                 $message = 'the new password is: ' . $new_password;
-                $headers = 'From: diego_sanchez-brunete_apps1ma1819@cev.com' . "\r\n" .
+                $headers = 'From: alex_rodriguezrealnofake@cev.com' . "\r\n" .
                     'Reply-To: ' . $to . "\r\n" .
                     'X-Mailer: PHP/' . phpversion();
                 
@@ -135,9 +137,14 @@ class users extends Model
             
         $user = $this->get_logged_user($request);
 
-        $user->has()->attach($request->app_id);
+        $data = DB::select('select * from has_relation where has_relation.user_id = ' . $user->id . ' and has_relation.app_id = ' . $request->app_id);
 
-        return 200;
+        if ($data == null) {
+            $user->has()->attach($request->app_id);
+            return 200;
+        } else {
+            return response(203, 203);
+        }       
         } catch (\Throwable $th) {
             return response()->json([
                 'message' => "wrong data"
@@ -152,7 +159,7 @@ class users extends Model
          
         $user = $this->get_logged_user($request);
 
-        $data = DB::select('select * from apps, has_relation where has_relation.user_id = ' . $user->id);
+        $data = DB::select('select apps.* from apps, has_relation where has_relation.user_id = ' . $user->id . ' and has_relation.app_id = apps.id');
 
         return $data;
  

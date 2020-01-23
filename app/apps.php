@@ -11,6 +11,7 @@ class apps extends Model
     protected $table = 'apps';
     protected $guarded = ['id'];
     protected $fillable = ['name', 'icon'];
+    public $timestamps = false;
 
     public function register(Request $request)
     {
