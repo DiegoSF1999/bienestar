@@ -26,14 +26,10 @@ class CheckToken
             {
                 return $next($request);
             } else {
-                return response()->json([
-                    'message' => "access unavailable"
-                ], 401);
+                return 401;
             }
          } catch (\Throwable $th) {
-         return response()->json([
-                 'message' => "access unavailable"
-             ], 401);
+         return 401;
          }
     }
 }
