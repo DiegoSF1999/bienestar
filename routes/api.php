@@ -35,6 +35,7 @@ Route::GET('averageuse', 'UsagesRelationController@get_average_use')->middleware
 Route::GET('lastlocation', 'LocationsRelationController@get_last_location')->middleware('token');
 
 Route::GET('users', 'UsersController@index');
+Route::POST('usages', 'UsagesRelationController@index')->middleware('token');
 
 
 

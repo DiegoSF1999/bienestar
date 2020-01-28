@@ -20,7 +20,7 @@ class UsagesRelationController extends Controller
        
         $user = $users_inv->get_logged_user($request);
 
-        $data = DB::select('select * from usages_relation where user_id = ' . $user->id);
+        $data = DB::select('select usages_relation.date, SUM(usages_relation.used_time) as used_time from usages_relation where user_id = ' . $user->id . ' and app_id = ' . $request->app_id . ' group by usages_relation.date DESC');
 
         return $data;
     }
@@ -42,7 +42,7 @@ class UsagesRelationController extends Controller
        
         $user = $users_inv->get_logged_user($request);
 
-        $data = DB::select('select usages_relation.app_id, AVG(usages_relation.used_time) from usages_relation where user_id = ' . $user->id . ' group by usages_relation.app_id');
+        $data = DB::select('select usages_relation.app_id, AVG(usages_relation.used_time) as used_time from usages_relation where user_id = ' . $user->id . ' group by usages_relation.app_id');
 
         return $data;
     }
