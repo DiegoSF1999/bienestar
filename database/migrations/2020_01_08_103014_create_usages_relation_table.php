@@ -19,7 +19,7 @@ class CreateUsagesRelationTable extends Migration
             $table->unsignedInteger('app_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('app_id')->references('id')->on('apps');
-            $table->integer('used_time');
+            $table->double('used_time');
             $table->date('date');
             $table->timestamps();
         });

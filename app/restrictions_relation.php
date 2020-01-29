@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\users;
 
 class restrictions_relation extends Pivot
 {
@@ -50,6 +51,27 @@ class restrictions_relation extends Pivot
 
         
        
+    }
+
+    public function remove(Request $request) {
+
+        $users_inv = new users();
+
+
+        try {
+
+            DB::delete('delete from restrictions_relation where user_id = ' . $users_inv->get_logged_user($request)->id . ' and app_id = ' . $request->app_id);
+            
+            return 200;    
+            
+            
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => "wrong data"
+            ], 401);
+       }
+    
+
     }
 
 }

@@ -33,9 +33,11 @@ Route::GET('totaluse', 'UsagesRelationController@get_total_use')->middleware('to
 Route::POST('todayuse', 'UsagesRelationController@get_today_use')->middleware('token');
 Route::GET('averageuse', 'UsagesRelationController@get_average_use')->middleware('token');
 Route::GET('lastlocation', 'LocationsRelationController@get_last_location')->middleware('token');
+Route::POST('restrictionremove', 'RestrictionsRelationController@remove')->middleware('token');;
 
 Route::GET('users', 'UsersController@index');
 Route::POST('usages', 'UsagesRelationController@index')->middleware('token');
+
 
 
 

@@ -3634,3 +3634,33 @@ Did you mean this?
 #46 /Applications/MAMP/htdocs/Diego/bienestar/public/index.php(55): Illuminate\\Foundation\\Http\\Kernel->handle(Object(Illuminate\\Http\\Request))
 #47 {main}
 "} 
+[2020-01-29 09:53:56] local.ERROR: Method Illuminate\Database\Schema\Blueprint::Int does not exist. {"exception":"[object] (BadMethodCallException(code: 0): Method Illuminate\\Database\\Schema\\Blueprint::Int does not exist. at /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Support/Traits/Macroable.php:100)
+[stacktrace]
+#0 /Applications/MAMP/htdocs/Diego/bienestar/database/migrations/2020_01_08_102953_create_restrictions_relation_table.php(21): Illuminate\\Database\\Schema\\Blueprint->__call('Int', Array)
+#1 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(164): CreateRestrictionsRelationTable->{closure}(Object(Illuminate\\Database\\Schema\\Blueprint))
+#2 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Support/helpers.php(1027): Illuminate\\Database\\Schema\\Builder->Illuminate\\Database\\Schema\\{closure}(Object(Illuminate\\Database\\Schema\\Blueprint))
+#3 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Database/Schema/Builder.php(165): tap(Object(Illuminate\\Database\\Schema\\Blueprint), Object(Closure))
+#4 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(237): Illuminate\\Database\\Schema\\Builder->create('restrictions_re...', Object(Closure))
+#5 /Applications/MAMP/htdocs/Diego/bienestar/database/migrations/2020_01_08_102953_create_restrictions_relation_table.php(25): Illuminate\\Support\\Facades\\Facade::__callStatic('create', Array)
+#6 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(360): CreateRestrictionsRelationTable->up()
+#7 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(367): Illuminate\\Database\\Migrations\\Migrator->Illuminate\\Database\\Migrations\\{closure}()
+#8 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(178): Illuminate\\Database\\Migrations\\Migrator->runMigration(Object(CreateRestrictionsRelationTable), 'up')
+#9 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(147): Illuminate\\Database\\Migrations\\Migrator->runUp('/Applications/M...', 1, false)
+#10 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Database/Migrations/Migrator.php(96): Illuminate\\Database\\Migrations\\Migrator->runPending(Array, Array)
+#11 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Database/Console/Migrations/MigrateCommand.php(71): Illuminate\\Database\\Migrations\\Migrator->run(Array, Array)
+#12 [internal function]: Illuminate\\Database\\Console\\Migrations\\MigrateCommand->handle()
+#13 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(29): call_user_func_array(Array, Array)
+#14 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\\Container\\BoundMethod::Illuminate\\Container\\{closure}()
+#15 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\\Container\\BoundMethod::callBoundMethod(Object(Illuminate\\Foundation\\Application), Array, Object(Closure))
+#16 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Container/Container.php(572): Illuminate\\Container\\BoundMethod::call(Object(Illuminate\\Foundation\\Application), Array, Array, NULL)
+#17 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Console/Command.php(183): Illuminate\\Container\\Container->call(Array)
+#18 /Applications/MAMP/htdocs/Diego/bienestar/vendor/symfony/console/Command/Command.php(255): Illuminate\\Console\\Command->execute(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#19 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Console/Command.php(170): Symfony\\Component\\Console\\Command\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Illuminate\\Console\\OutputStyle))
+#20 /Applications/MAMP/htdocs/Diego/bienestar/vendor/symfony/console/Application.php(1011): Illuminate\\Console\\Command->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#21 /Applications/MAMP/htdocs/Diego/bienestar/vendor/symfony/console/Application.php(272): Symfony\\Component\\Console\\Application->doRunCommand(Object(Illuminate\\Database\\Console\\Migrations\\MigrateCommand), Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#22 /Applications/MAMP/htdocs/Diego/bienestar/vendor/symfony/console/Application.php(148): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#23 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Console/Application.php(89): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#24 /Applications/MAMP/htdocs/Diego/bienestar/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(122): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#25 /Applications/MAMP/htdocs/Diego/bienestar/artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#26 {main}
+"} 
