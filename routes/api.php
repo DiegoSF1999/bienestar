@@ -36,7 +36,7 @@ Route::GET('lastlocation', 'LocationsRelationController@get_last_location')->mid
 Route::POST('restrictionremove', 'RestrictionsRelationController@remove')->middleware('token');;
 
 Route::GET('users', 'UsersController@index');
-Route::POST('usages', 'UsagesRelationController@index')->middleware('token');
+Route::POST('getusages', 'UsagesRelationController@index')->middleware('token');
 
 
 
