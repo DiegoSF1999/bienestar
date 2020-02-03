@@ -55,6 +55,17 @@ class RestrictionsRelationController extends Controller
         return $restrictions_inv->remove($request);
     }
 
+    public function change(Request $request)
+    {
+
+        
+        $restrictions_inv = new restrictions_relation();
+
+        return $restrictions_inv->change($request);
+
+        return 200;
+    }
+
     /**
      * Display the specified resource.
      *
