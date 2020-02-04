@@ -18,9 +18,9 @@ class CreateRestrictionsRelationTable extends Migration
             $table->unsignedInteger('app_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('app_id')->references('id')->on('apps');
-            $table->double('maximun_time');
-            $table->double('start_hour');
-            $table->double('finish_hour');
+            $table->integer('maximun_time');
+            $table->integer('start_hour');
+            $table->integer('finish_hour');
             $table->timestamps();
         });
     }

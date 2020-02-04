@@ -78,18 +78,18 @@ class restrictions_relation extends Pivot
 
         $users_inv = new users();
 
-       // try {
+        try {
 
             DB::update('update restrictions_relation set maximun_time = ' . $request->maximun_time . ', start_hour = ' . $request->start_hour . ', finish_hour = ' . $request->finish_hour . ' where user_id = ' . $users_inv->get_logged_user($request)->id . ' and app_id = ' . $request->app_id);
 
             return 200;
             
             
-        /*} catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             return response()->json([
                 'message' => "wrong data"
             ], 401);
-       }*/
+       }
     
 
     }
