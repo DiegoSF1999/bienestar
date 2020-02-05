@@ -32,7 +32,7 @@ Route::GET('myapps', 'UsersController@show_user_apps')->middleware('token');
 Route::GET('totaluse', 'UsagesRelationController@get_total_use')->middleware('token');
 Route::POST('todayuse', 'UsagesRelationController@get_today_use')->middleware('token');
 Route::GET('averageuse', 'UsagesRelationController@get_average_use')->middleware('token');
-Route::GET('monthlyuse', 'UsagesRelationController@get_monthly_use')->middleware('token');
+Route::GET('stadistics', 'UsagesRelationController@get_stadistics')->middleware('token');
 Route::GET('annualuse', 'UsagesRelationController@get_annual_use')->middleware('token');
 Route::GET('weeklyuse', 'UsagesRelationController@get_weekly_use')->middleware('token');
 Route::GET('lastlocation', 'LocationsRelationController@get_last_location')->middleware('token');

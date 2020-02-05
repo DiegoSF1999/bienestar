@@ -59,75 +59,14 @@ class UsagesRelationController extends Controller
         return $data;
     }
 
-    public function get_monthly_use(Request $request)
+    public function get_stadistics(Request $request)
     {
-        $users_inv = new users();
-       
-        $user = $users_inv->get_logged_user($request);
+        $usages_inv = new usages_relation();
 
-        $data = DB::select('select usages_relation.app_id, SUM(usages_relation.used_time) as used_time from usages_relation where user_id = ' . $user->id . ' group by usages_relation.app_id ASC, usages_relation.date DESC');
-
-        $ids = array();
-        $uses = array();
-
-        $idactual = 0;
-        $total = 0;
-        $times = 0;
-
-      
-      for ($i=0; $i < count($data); $i++) { 
-
-
-        if ($idactual != $data[$i]->app_id) {
-
-            $total /= $times;
-
-            array_push($ids, $idactual);
-            array_push($uses, $total);
-
-            $idactual = $data[$i]->app_id;
-            $total = 0;
-            $times = 0;
-
-        }
-
-
-            $total += $data[$i]->used_time;
-            $times += 1;
-       
-
-      }
-
-      $total /= $times;
-
-      array_push($ids, $idactual);
-      array_push($uses, $total);
-
-
-        
+        return $usages_inv->get_stadistics($request);
     }
 
-    public function get_annual_use(Request $request)
-    {
-        $users_inv = new users();
-       
-        $user = $users_inv->get_logged_user($request);
 
-        $data = DB::select('select usages_relation.app_id, AVG(usages_relation.used_time) as used_time from usages_relation where user_id = ' . $user->id . ' group by usages_relation.app_id, year(usages_relation.date)');
-
-        return $data;
-    }
-
-    public function get_weekly_use(Request $request)
-    {
-        $users_inv = new users();
-       
-        $user = $users_inv->get_logged_user($request);
-
-        $data = DB::select('select usages_relation.app_id, AVG(usages_relation.used_time) as used_time from usages_relation where user_id = ' . $user->id . ' group by usages_relation.app_id, week(usages_relation.date)');
-
-        return $data;
-    }
 
     public function get_today_use(Request $request)
     {
