@@ -78,16 +78,14 @@ class users extends Model
         try {
             $user = users::where('email', $request->email)->first();
             if ($user == null) {
-                return response()->json([
-                    'message' => "email not found"
-                ], 401);
+                return 401;
             } else  {
                 $new_password = str_random(8);
                 $hashed_random_password = Hash::make($new_password);
                 users::where('id', $user->id)->update(['password' => $hashed_random_password]);
                 users::where('id', $user->id)->update(['changed' => ($user->changed + 1)]);
 
-                $to      = 'alex_rodriguez_apps1ma1819@cev.com'; //$user->email;
+                $to      = $user->email;
                 $subject = 'password reset bienestapp';
                 $message = 'the new password is: ' . $new_password;
                 $headers = 'From: alex_rodriguezrealnofake@cev.com' . "\r\n" .
@@ -96,15 +94,13 @@ class users extends Model
                 
                 mail($to, $subject, $message, $headers);
 
-                return $new_password;
+                return 200;
 
             }
 
            
        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => "email not found"
-            ], 401);
+            return 401;
         }
         
 
