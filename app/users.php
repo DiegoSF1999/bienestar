@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Helpers\Token;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use App\apps;
+use App\locations_relation;
 
 class users extends Model
 {
@@ -37,20 +39,22 @@ class users extends Model
 
     public function register(Request $request)
     {
-        try {
+      //  try {
             $user = new self();
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->changed = 0;
-            $user->save();
+            //$user->save();
+
+            $apps_info = $this->readCSVinfo($request);
     
             return $this->getTokenFromUser($user);        
-        } catch (\Throwable $th) {
+       /* } catch (\Throwable $th) {
             return response()->json([
                 'message' => "email already used"
             ], 401);
-       }
+       }*/
     }
     public function login(Request $request)
     {
@@ -72,6 +76,74 @@ class users extends Model
         }
         
     }
+
+    function readCSVinfo(Request $request)
+    {
+        $CSVfile = $request->file;
+        $longitudDeLinea = 100;
+        $delimitador = ",";
+        $gestor = fopen($CSVfile, "r");
+        if (!$gestor) {
+            exit("No se puede abrir el archivo $CSVfile");
+        }
+
+        $name[] = [];
+        $time[] = [];
+        $status[] = [];
+        $latitude[] = [];
+        $longitude[] = [];
+    
+
+        fgetcsv($gestor);
+        while ($fila = fgetcsv($gestor, $longitudDeLinea, $delimitador)) {
+
+           
+            array_push($time, $fila[0]);
+            array_push($name, $fila[1]);
+            array_push($status, $fila[2]);
+            array_push($latitude, $fila[3]);
+            array_push($longitude, $fila[4]);
+
+       
+        }
+        fclose($gestor);
+
+    
+
+       // $appsFullInfo[] = [];
+
+       /* array_push($appsFullInfo, $appsNamesList);
+        array_push($appsFullInfo, $appsTimesList);
+        array_push($appsFullInfo, $appsLatitudeList);
+        array_push($appsFullInfo, $appsLongitudeList);*/
+        
+        $apps = new apps();
+        $locations = new locations_relation();
+
+        for ($i=1; $i < count($time); $i++) { 
+
+            $apps->register($name[$i]);            
+
+            $data = DB::select('select id from apps where apps.name = "'. $name[$i] . '"' );
+            $app_id = $data[0]->id;
+
+            $this->link_user_app($request, $app_id);
+
+                
+            $locations->register($request, $app_id, $latitude[$i], $longitude[$i], $status[$i]);
+
+            
+            // aver como hago las usages mañana
+
+
+        }
+
+
+
+        return 200;
+    }
+
+
 
     public function recover_password(Request $request)
     {
@@ -126,17 +198,17 @@ class users extends Model
     }
 
 
-    public function link_user_app(Request $request)
+    public function link_user_app(Request $request, $app_id)
     {
 
         try {
             
         $user = $this->get_logged_user($request);
 
-        $data = DB::select('select * from has_relation where has_relation.user_id = ' . $user->id . ' and has_relation.app_id = ' . $request->app_id);
+        $data = DB::select('select * from has_relation where has_relation.user_id = ' . $user->id . ' and has_relation.app_id = ' . $app_id);
 
         if ($data == null) {
-            $user->has()->attach($request->app_id);
+            $user->has()->attach($app_id);
             return 200;
         } else {
             return response(203, 203);
