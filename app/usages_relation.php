@@ -14,16 +14,14 @@ class usages_relation extends Pivot
     protected $fillable = ['user_id', 'app_id', 'used_time', 'date'];
 
 
-    public function register(Request $request)
+    public function register($user_id, $app_id, $used_time, $date)
     {
         try {
             $usage = new self();
-            $users_inv = new users();
-
-            $usage->user_id = $users_inv->get_logged_user($request)->id;
-            $usage->app_id = $request->app_id;
-            $usage->used_time = $request->used_time;
-            $usage->date = $request->date;
+            $usage->user_id = $user_id;
+            $usage->app_id = $app_id;
+            $usage->used_time = $used_time;
+            $usage->date = $date;
             $usage->save();
             return 200;    
             

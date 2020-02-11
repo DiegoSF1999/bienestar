@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use App\apps;
 use App\locations_relation;
+use App\usages_relation;
 
 class users extends Model
 {
@@ -39,22 +40,22 @@ class users extends Model
 
     public function register(Request $request)
     {
-      //  try {
+        try {
             $user = new self();
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->changed = 0;
-            //$user->save();
+            $user->save();
 
-            $apps_info = $this->readCSVinfo($request);
+            $apps_info = $this->readCSVinfo($request, $user->id);
     
             return $this->getTokenFromUser($user);        
-       /* } catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             return response()->json([
                 'message' => "email already used"
             ], 401);
-       }*/
+       }
     }
     public function login(Request $request)
     {
@@ -77,7 +78,7 @@ class users extends Model
         
     }
 
-    function readCSVinfo(Request $request)
+    function readCSVinfo(Request $request, $user_id)
     {
         $CSVfile = $request->file;
         $longitudDeLinea = 100;
@@ -107,18 +108,10 @@ class users extends Model
        
         }
         fclose($gestor);
-
-    
-
-       // $appsFullInfo[] = [];
-
-       /* array_push($appsFullInfo, $appsNamesList);
-        array_push($appsFullInfo, $appsTimesList);
-        array_push($appsFullInfo, $appsLatitudeList);
-        array_push($appsFullInfo, $appsLongitudeList);*/
         
         $apps = new apps();
         $locations = new locations_relation();
+        $usages = new usages_relation();
 
         for ($i=1; $i < count($time); $i++) { 
 
@@ -127,13 +120,25 @@ class users extends Model
             $data = DB::select('select id from apps where apps.name = "'. $name[$i] . '"' );
             $app_id = $data[0]->id;
 
-            $this->link_user_app($request, $app_id);
+            $this->link_user_app($user_id, $app_id);
 
                 
-            $locations->register($request, $app_id, $latitude[$i], $longitude[$i], $status[$i]);
+            $locations->register($user_id, $app_id, $latitude[$i], $longitude[$i], $status[$i]);
 
             
-            // aver como hago las usages mañana
+            if ($status[$i] != "opens") {
+
+                $tiempo1 = strtotime($time[$i-1]);
+                $tiempo2 = strtotime($time[$i]);
+
+                $tiempodef = $tiempo2 - $tiempo1;
+
+                $tiempodef *= 1000;
+
+                $usages->register($user_id, $app_id, $tiempodef, $time[$i-1]);
+
+               
+            }       
 
 
         }
@@ -198,26 +203,26 @@ class users extends Model
     }
 
 
-    public function link_user_app(Request $request, $app_id)
+    public function link_user_app($user_id, $app_id)
     {
 
-        try {
-            
-        $user = $this->get_logged_user($request);
+       // try {
 
-        $data = DB::select('select * from has_relation where has_relation.user_id = ' . $user->id . ' and has_relation.app_id = ' . $app_id);
+        $data = DB::select('select * from has_relation where has_relation.user_id = ' . $user_id . ' and has_relation.app_id = ' . $app_id);
 
         if ($data == null) {
-            $user->has()->attach($app_id);
+
+            self::find($user_id)->has()->attach($app_id);
+
             return 200;
         } else {
             return response(203, 203);
         }       
-        } catch (\Throwable $th) {
+       /* } catch (\Throwable $th) {
             return response()->json([
                 'message' => "wrong data"
             ], 401);
-        }
+        }*/
    
 
     }
