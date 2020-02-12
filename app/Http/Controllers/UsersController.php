@@ -27,6 +27,16 @@ class UsersController extends Controller
         //
     }
 
+    public function getmyUser(Request $request){
+
+        $users = new users();
+
+        $user = $users->get_logged_user($request);
+
+        return json_encode($user);
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -52,6 +62,13 @@ class UsersController extends Controller
     {
             $users = new users();
             return $users->recover_password($request);
+         
+    }
+
+    public function reset_password(Request $request)
+    {
+            $users = new users();
+            return $users->reset_password($request);
          
     }
 

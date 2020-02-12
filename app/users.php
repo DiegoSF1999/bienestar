@@ -183,8 +183,30 @@ class users extends Model
 
 
     }
+
+    public function reset_password(Request $request)
+    {
+        try {
+            $user = $this->get_logged_user($request);
+
+                $new_password = $request->password;
+                $hashed_new_password = Hash::make($new_password);
+                users::where('id', $user->id)->update(['password' => $hashed_new_password]);
+                users::where('id', $user->id)->update(['changed' => ($user->changed + 1)]);
+
+                $new_user = self::where('email', $user->email)->first();
+
+                return $this->getTokenFromUser($new_user);
+           
+         } catch (\Throwable $th) {
+            return 401;
+        }
+        
+
+
+    }
     
-    private function getTokenFromUser($user)
+    public function getTokenFromUser($user)
     {
         $token_inv = new Token();
         $token = $token_inv->encode_token($user->email, $user->changed);
