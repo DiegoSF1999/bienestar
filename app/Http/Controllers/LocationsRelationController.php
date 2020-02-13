@@ -20,7 +20,7 @@ class LocationsRelationController extends Controller
        
         $user = $users_inv->get_logged_user($request);
 
-        $data = DB::select('select * from locations_relation where user_id = ' . $user->id);
+        $data = DB::select('select * from locations_relation where user_id = ' . $user->id . ' and open_close = 0');
 
         return $data;
     }

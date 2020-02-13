@@ -74,7 +74,7 @@ class UsagesRelationController extends Controller
        
         $user = $users_inv->get_logged_user($request);
 
-        $data = DB::select('select apps.*, usages_relation.app_id, SUM(usages_relation.used_time) as used_time from usages_relation, apps where user_id = ' 
+        $data = DB::select('select usages_relation.app_id, SUM(usages_relation.used_time) as used_time from usages_relation, apps where user_id = ' 
         . $user->id . ' and usages_relation.date = "' . $request->date . '" and usages_relation.app_id = apps.id group by usages_relation.app_id
         ');
 
